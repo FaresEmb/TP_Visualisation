@@ -1,11 +1,12 @@
 from zipfile import ZipFile
 import pandas as pd
 
+
 def get_files_list(zipfile = 'data/brut.zip'):
-    with ZipFile(zipfile, 'r') as zipObj:
-        listOfiles = zipObj.namelist()
+    with ZipFile(zipfile, 'r') as zip_obj:
+        list_o_files = zip_obj.namelist()
         list_files = []
-        for elem in listOfiles:
+        for elem in list_o_files:
             if elem != 'brut/':
                 list_files.append(elem)
     return list_files
