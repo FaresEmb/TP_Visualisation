@@ -10,13 +10,20 @@ def get_files_list(zipfile = 'data/brut.zip'):
             if elem != 'brut/':
                 list_files.append(elem)
     return list_files
-
-def read_csv_from_zip(filename = None,zip_file='data/brut.zip'):
+def valid_datetime(d):
+    try:
+        return parser.parse(d)
+    except:
+        return None
+def read_csv_from_zip(filename = None,zip_file='data/brut.zip',names=None):
     if filename == None:
         list_files = get_files_list()
         filename = list_files[0]
     zf = ZipFile(zip_file)
-    return pd.read_csv(zf.open(filename),sep=';')
+    if names == None:
+        return pd.read_csv(zf.open(filename),sep=';')
+    else:
+        return pd.read_csv(zf.open(filename),sep=';',parse_dates=[names[0]],names=names)
 
 #filename = get_files_list()[0]
 #df = read_csv_from_zip(filename=filename)
