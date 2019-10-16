@@ -1,10 +1,21 @@
 from zipfile import ZipFile
+import pandas as pd
+
+
+list_files = []
 
 # Load brut.zip
+
+
 with ZipFile('data/brut.zip', 'r') as zipObj:
-   
-   # Get list of files names in zip
    listOfiles = zipObj.namelist()
-   # Iterate over the list of file names in given list & print them
    for elem in listOfiles:
-       print(elem)
+       if elem != 'brut/':
+        list_files.append(elem)
+
+zf = ZipFile('data/brut.zip')
+df = pd.read_csv(zf.open(list_files[0]))
+
+print(df.head)
+
+
