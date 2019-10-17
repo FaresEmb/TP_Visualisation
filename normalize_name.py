@@ -11,11 +11,9 @@ def normalize_station(station):
             return s
     return station
 def normalize(df=None):
-    if df ==None:
+    if df is None:
         names = ['date','Station','Status','Nombre de vélos disponibles','Nombre d\'emplacements disponibles']
         list_files = ld.get_files_list()
         df = ld.read_csv_from_zip(filename=list_files[1],names=names)
     df.iloc[:,1] = df.iloc[:,1].apply(normalize_station)
     return df
-
-print(normalize().head())
