@@ -12,6 +12,10 @@ import load_data as ld
 import normalize_name as nm
 import create_folder as cf
 
+def sampling(dataframe, time='10min', name='Timestamp'):
+    dataframe = dataframe.set_index(name).resample(time).last().dropna().reset_index()
+    return dataframe
+
 velo_filename = ld.get_files_list()[1]
 names_velo = ['date','Station','Status','Nombre de vélos disponibles','Nombre d\'emplacements disponibles']
 df_velo = ld.read_csv_from_zip(filename=velo_filename,names=names_velo)
@@ -20,22 +24,28 @@ df_velo = nm.normalize(df_velo)
 print("normalize Station Name.......")
 print(df_velo.head())
 
-
-
 meteo_filename = ld.get_files_list()[2]
 names_meteo = ['Timestamp','Status','Clouds','Humidity','Pressure','Rain','WindGust','WindVarEnd','WindVarBeg','WindDeg','WindSpeed','Snow','TemperatureMax','TemperatureMin','TemperatureTemp']
 df_meteo = ld.read_csv_from_zip(filename=meteo_filename,names=names_meteo)
 print("Load Meteo DataFrame.......")
 print(df_meteo.head())
 
-#print((df_velo.date == None).value_counts())
-#print((df_meteo.Timestamp == None).value_counts())
 
-print("Merge Velo & meteo DataFrames.......")
 df_merged = df_velo.merge(df_meteo,left_on='date',right_on='Timestamp', suffixes=('_velo', '_meteo'))
+print("Load Merged DataFrame.......")
 print(df_merged.head())
 
-stations_name = df_merged.Station.unique()
 
+print(df_merged.head())
+df_merged = sampling(df_merged,name='date')
+print(df_merged.head())
+
+
+print(df_merged.Station.unique())
+
+
+stations_name = df_velo.Station.unique()
 print("Creating folders")
 cf.create_folder(stations_name)
+
+

@@ -25,8 +25,8 @@ def read_csv_from_zip(filename = None,zip_file='data/brut.zip',names=None):
     else:
         return pd.read_csv(zf.open(filename),sep=';',parse_dates=[names[0]],names=names)
 
-#filename = get_files_list()[0]
+#filename = get_files_list()[1]
 #df = read_csv_from_zip(filename=filename)
-#print(df.head)
+#print(df.head())
 
 print('......__ loading load_data module __ ......')
