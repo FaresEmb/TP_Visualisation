@@ -31,7 +31,7 @@ print((df_velo.date == None).value_counts())
 print((df_meteo.Timestamp == None).value_counts())
 
 def sampling(dataframe, time='10min', name='Timestamp'):
-    dataframe = dataframe.set_index('Timestamp').resample(time).last().dropna().reset_index()
+    dataframe = dataframe.set_index(name).resample(time).last().dropna().reset_index()
     return dataframe
 
 df_merged = df_velo.merge(df_meteo,left_on='date',right_on='Timestamp', suffixes=('_velo', '_meteo'))
@@ -42,10 +42,4 @@ print(df_merged.head())
 print(df_merged.head())
 df_merged = sampling(df_merged,name='date')
 print(df_merged.head())
-
-
-print(df_merged.dtypes)
-
-print(df_meteo.iloc[1:50,:])
-df_meteo = sampling(df_meteo)
-print(df_meteo.iloc[1:50,:])
+print(df_merged.Station.unique())
