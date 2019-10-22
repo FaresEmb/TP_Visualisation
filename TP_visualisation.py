@@ -11,6 +11,7 @@ import zipfile
 import load_data as ld
 import normalize_name as nm
 
+import filefilling as ff
 
 velo_filename = ld.get_files_list()[1]
 names_velo = ['date','Station','Status','Nombre de vélos disponibles','Nombre d\'emplacements disponibles']
@@ -30,16 +31,13 @@ print(df_meteo.head())
 print((df_velo.date == None).value_counts())
 print((df_meteo.Timestamp == None).value_counts())
 
-def sampling(dataframe, time='10T', name='Timestamp'):
-    dataframe = dataframe.set_index(name).resample(time).last()#.dropna().reset_index()
-    return dataframe
-
 df_merged = df_velo.merge(df_meteo,left_on='date',right_on='Timestamp', suffixes=('_velo', '_meteo'))
 print("Load Merged DataFrame.......")
 print(df_merged.head())
 
 
 print(df_merged.head())
-df_merged = sampling(df_merged.loc[(df_merged['Station'] == "01. Duc")],name='date')
+#df_merged = ff.sampling(df_merged.loc[(df_merged['Station'] == "01. Duc")],name='date')
+ff.samplestation(df_merged, namestation = 'Station', name_date='date')
 print(df_merged)
 print(df_merged.Station.unique())
